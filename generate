@@ -5,9 +5,16 @@ from typing import Any
 
 import yaml
 
-from lib.colors import ranked_matches, str2color
+from lib.colors import color2str, ranked_matches, str2color
 from lib.config import config_schema
 from lib.data import Highlight
+
+def kitty_colors(term2true: dict[int, tuple[int, int]]) -> tuple[str, str]:
+    def mode(i: int) -> str:
+        return '\n'.join([
+            f'color{term} {color2str(true[i])}' for term, true in term2true.items()
+        ])
+    return (mode(0), mode(1))
 
 def main(config: dict[str, Any]):
     # 256-color -> (dark-24bit, light-24bit)
@@ -42,7 +49,9 @@ def main(config: dict[str, Any]):
         )
         for group in groups: group2hl[group] = hl
 
-    print(term2true)
+    kitty_dark, kitty_light = kitty_colors(term2true)
+    print(kitty_dark)
+    print(kitty_light)
     for group, hl in group2hl.items():
         print(hl.vim(group))
 
