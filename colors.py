@@ -10,7 +10,7 @@ def rgb_from(color: int) -> tuple[int, int, int]:
 
 # adjusted from kitty/colors.c
 def color_at(i: int) -> int:
-    assert(i > 15) # first 16 colors are usually customized
+    if i < 16: raise Exception('first 16 colors are usually customized') 
     valuerange = [0x00, 0x5f, 0x87, 0xaf, 0xd7, 0xff];
     if (i < 232):
         color = i - 16;
@@ -39,10 +39,20 @@ def closest_to(*colors: int) -> int:
 
     return best
 
-def color_string(color: int) -> str: return hex(color).replace('0x', '#')
+def color2str(color: int) -> str: return hex(color).replace('0x', '#')
+
+def str2color(s: str) -> int:
+    s = s.replace('#', '')
+    full = None
+    if len(s) == 1: full = s * 6
+    if len(s) == 2: full = s * 3
+    if len(s) == 3: full = s[0] * 2 + s[1] * 2 + s[2] * 2
+    if len(s) == 6: full = s
+    if not full: raise Exception('hex colors can only be 1, 2, 3 or 6 digits')
+    return int(full, 16)
 
 def print_hex(color: int, text: str | None = None) -> str:
-    content = text or color_string(color)
+    content = text or color2str(color)
 
     term = os.getenv('COLORTERM')
     truecolor = bool(term and (term == 'truecolor' or term == '24bit'))
