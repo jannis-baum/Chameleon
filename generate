@@ -44,9 +44,14 @@ def main(config: dict[str, Any]):
             group2hl[group] = hl
 
     kitty_dark, kitty_light = kitty_out(config['kitty'].get('header'), term2true)
-    print(kitty_dark)
-    print(kitty_light)
-    print(vim_out(config['vim'].get('header'), group2hl))
+    vim = vim_out(config['vim'].get('header'), group2hl)
+
+    with open(config['kitty']['destinations']['dark'], 'w') as fp:
+        fp.write(kitty_dark)
+    with open(config['kitty']['destinations']['light'], 'w') as fp:
+        fp.write(kitty_light)
+    with open(config['vim']['destination'], 'w') as fp:
+        fp.write(vim)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
