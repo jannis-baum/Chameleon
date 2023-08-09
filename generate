@@ -44,7 +44,7 @@ def main(config: dict[str, Any]):
 
     print(term2true)
     for group, hl in group2hl.items():
-        print(group, hl.fg, hl.bg, hl.deco, hl.ul)
+        print(hl.vim(group))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
