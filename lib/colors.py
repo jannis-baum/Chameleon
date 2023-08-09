@@ -51,7 +51,7 @@ def str2color(s: str) -> int:
     if not full: raise Exception('hex colors can only be 1, 2, 3 or 6 digits')
     return int(full, 16)
 
-def print_hex(color: int, text: str | None = None) -> str:
+def ansi_color(color: int, text: str | None = None) -> str:
     content = text or color2str(color)
 
     term = os.getenv('COLORTERM')
@@ -60,4 +60,4 @@ def print_hex(color: int, text: str | None = None) -> str:
 
     r, g, b = rgb_from(color)
     foreground = 30 if (r+g+b > 382) else 37
-    return f'\0x33[{foreground};48;2;{r};{g};{b}m   {content}   \0x33[0m'
+    return f'\033[{foreground};48;2;{r};{g};{b}m   {content}   \033[0m'
