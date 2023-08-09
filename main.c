@@ -17,6 +17,7 @@ void print_hex(uint32_t color, char* text);
 int main(void) {
     char hehe[] = "hehe";
     print_hex(color_i(23), NULL);
+    print_hex(color_i(183), hehe);
 }
 
 // adjusted from kitty/colors.c
