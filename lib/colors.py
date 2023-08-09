@@ -1,5 +1,4 @@
 import os
-import sys
 
 def rgb_from(color: int) -> tuple[int, int, int]:
     return (
@@ -23,21 +22,15 @@ def color_at(i: int) -> int:
         v = 8 + gray * 10;
         return (v << 16) | (v << 8) | v;
 
-def closest_to(*colors: int) -> int:
+def ranked_matches(*colors: int) -> list[int]:
     rgbs = [rgb_from(c) for c in colors]
     def diff_to(color: int):
         rgb = rgb_from(color)
         return sum(((rgb[0] - r)**2 + (rgb[1] - g)**2 + (rgb[2] - b)**2)**2 for r, g, b in rgbs)
 
-    diff = sys.maxsize
-    best = 0
-    for i in range(16, 256):
-        diff_i = diff_to(color_at(i))
-        if diff_i < diff:
-            diff = diff_i
-            best = i
-
-    return best
+    diffs = [(i, diff_to(color_at(i))) for i in range(16, 256)]
+    diffs.sort(key=lambda d: d[1], reverse=True)
+    return [i for i, _ in diffs]
 
 def color2str(color: int) -> str: return hex(color).replace('0x', '#')
 
