@@ -9,6 +9,7 @@ from lib.colors import ranked_matches, str2color
 from lib.config import config_schema
 from lib.data import Highlight
 from lib.schemes.kitty import kitty_out
+from lib.schemes.vim import vim_out
 
 def main(config: dict[str, Any]):
     # 256-color -> (dark-24bit, light-24bit)
@@ -45,6 +46,7 @@ def main(config: dict[str, Any]):
     kitty_dark, kitty_light = kitty_out(config['kitty'].get('header'), term2true)
     print(kitty_dark)
     print(kitty_light)
+    print(vim_out(config['vim'].get('header'), group2hl))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
