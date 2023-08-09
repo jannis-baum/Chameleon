@@ -1,11 +1,10 @@
 from voluptuous.schema_builder import Required, Schema
 
+color_schema = { Required('dark'): str, Required('light'): str }
+
 config_schema = Schema({
     Required('kitty'): {
-        Required('destinations'): {
-            Required('dark'): str,
-            Required('light'): str
-        },
+        Required('destinations'): color_schema,
         'header': str
     },
 
@@ -14,8 +13,10 @@ config_schema = Schema({
         'header': str,
         Required('colors'): [{
             Required('groups'): [str],
-            Required('dark'): str,
-            Required('light'): str
+            'deco': str,
+            'fg': color_schema,
+            'bg': color_schema,
+            'ul': color_schema
         }]
     },
 })

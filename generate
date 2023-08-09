@@ -5,30 +5,46 @@ from typing import Any
 
 import yaml
 
-from lib.colors import color2str, ranked_matches, str2color
+from lib.colors import ranked_matches, str2color
 from lib.config import config_schema
+from lib.data import Highlight
 
 def main(config: dict[str, Any]):
     # 256-color -> (dark-24bit, light-24bit)
-    colors: dict[int, tuple[str, str]] = dict()
+    term2true: dict[int, tuple[int, int]] = dict()
+    # and the other way around
+    true2term: dict[tuple[int, int], int] = dict()
     # group -> 256-color
-    hl: dict[str, int] = dict()
+    group2hl: dict[str, Highlight] = dict()
+
+    def log_color(color_def: dict[str, str]) -> int:
+        dl = (str2color(color_def['dark']), str2color(color_def['light']))
+
+        if dl in true2term:
+            i = true2term[dl]
+        else:
+            matches = ranked_matches(*dl)
+            try:
+                i = next(m for m in matches if not m in term2true)
+            except:
+                raise Exception('you can only use 256 colors in total')
+            term2true[i] = dl
+            true2term[dl] = i
+        return i
 
     for color_def in config['vim']['colors']:
         groups = color_def['groups']
-        dark = str2color(color_def['dark'])
-        light = str2color(color_def['light'])
+        hl = Highlight(
+            log_color(color_def['fg']) if 'fg' in color_def else None,
+            log_color(color_def['bg']) if 'bg' in color_def else None,
+            color_def.get('deco'),
+            log_color(color_def['ul']) if 'ul' in color_def else None,
+        )
+        for group in groups: group2hl[group] = hl
 
-        matches = ranked_matches(dark, light)
-        try:
-            i = next(m for m in matches if not m in colors)
-        except:
-            raise Exception('you can only use 256 colors in total')
-        colors[i] = (color2str(dark), color2str(light))
-        for group in groups: hl[group] = i
-
-    print(colors)
-    print(hl)
+    print(term2true)
+    for group, hl in group2hl.items():
+        print(group, hl.fg, hl.bg, hl.deco, hl.ul)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
