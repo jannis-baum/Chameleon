@@ -32,7 +32,7 @@ def ranked_matches(*colors: int) -> list[int]:
     diffs.sort(key=lambda d: d[1])
     return [i for i, _ in diffs]
 
-def color2str(color: int) -> str: return hex(color).replace('0x', '#')
+def color2str(color: int) -> str: return f'{color:#08x}'.replace('0x', '#')
 
 def str2color(s: str) -> int:
     s = s.replace('#', '')
