@@ -24,9 +24,8 @@ def main(config: dict[str, Any]):
     # group -> 256-color
     group2hl: dict[str, Highlight] = dict()
 
-    def log_color(color_def: dict[str, str]) -> int:
+    def color_for(color_def: dict[str, str]) -> int:
         dl = (str2color(color_def['dark']), str2color(color_def['light']))
-
         if dl in true2term:
             i = true2term[dl]
         else:
@@ -40,14 +39,14 @@ def main(config: dict[str, Any]):
         return i
 
     for color_def in config['vim']['colors']:
-        groups = color_def['groups']
         hl = Highlight(
-            log_color(color_def['fg']) if 'fg' in color_def else None,
-            log_color(color_def['bg']) if 'bg' in color_def else None,
+            color_for(color_def['fg']) if 'fg' in color_def else None,
+            color_for(color_def['bg']) if 'bg' in color_def else None,
             color_def.get('deco'),
-            log_color(color_def['ul']) if 'ul' in color_def else None,
+            color_for(color_def['ul']) if 'ul' in color_def else None,
         )
-        for group in groups: group2hl[group] = hl
+        for group in color_def['groups']:
+            group2hl[group] = hl
 
     kitty_dark, kitty_light = kitty_colors(term2true)
     print(kitty_dark)
