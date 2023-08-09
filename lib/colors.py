@@ -29,7 +29,7 @@ def ranked_matches(*colors: int) -> list[int]:
         return sum(((rgb[0] - r)**2 + (rgb[1] - g)**2 + (rgb[2] - b)**2)**2 for r, g, b in rgbs)
 
     diffs = [(i, diff_to(color_at(i))) for i in range(16, 256)]
-    diffs.sort(key=lambda d: d[1], reverse=True)
+    diffs.sort(key=lambda d: d[1])
     return [i for i, _ in diffs]
 
 def color2str(color: int) -> str: return hex(color).replace('0x', '#')
