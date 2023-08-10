@@ -19,4 +19,22 @@ config_schema = Schema({
             'ul': color_schema
         }]
     },
+
+    'tm-theme': {
+        Required('destination'): str,
+        Required('author'): str,
+        Required('name'): str,
+        'global': {
+            'fg': str,
+            'bg': str,
+            'caret': str,
+            'invisibles': str,
+            'line-hl': str,
+            'selection': str
+        },
+        'groups': [{
+            Required('scopes'): [str],
+            Required('vim'): str
+        }]
+    }
 })
