@@ -20,7 +20,7 @@ config_schema = Schema({
         }]
     },
 
-    'tm-theme': {
+    'text-mate': {
         Required('destination'): str,
         Required('author'): str,
         Required('name'): str,

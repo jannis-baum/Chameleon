@@ -10,7 +10,7 @@ from lib.colors import ranked_matches, str2color
 from lib.config import config_schema
 from lib.data import Highlight
 from lib.schemes.kitty import kitty_out
-from lib.schemes.tm_theme import tm_out
+from lib.schemes.text_mate import tm_out
 from lib.schemes.vim import vim_out
 
 def save_to(dest: str, content: str):
@@ -58,9 +58,9 @@ def main(config: dict[str, Any]):
     vim = vim_out(config['vim'].get('header'), group2hl)
     save_to(config['vim']['destination'], vim)
 
-    if 'tm-theme' in config:
-        tm = tm_out(config['tm-theme'], group2hl)
-        save_to(config['tm-theme']['destination'], tm)
+    if 'text-mate' in config:
+        tm = tm_out(config['text-mate'], group2hl)
+        save_to(config['text-mate']['destination'], tm)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
