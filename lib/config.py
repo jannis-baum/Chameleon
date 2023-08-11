@@ -36,5 +36,10 @@ config_schema = Schema({
             Required('scopes'): [str],
             Required('vim'): str
         }]
-    }
+    },
+
+    'custom': [{
+        Required('destination'): str,
+        Required('content'): str
+    }]
 })
