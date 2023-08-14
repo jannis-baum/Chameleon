@@ -2,6 +2,7 @@
 
 import argparse
 import re
+import sys
 
 from lib.colors import ansi_color, str2color
 
@@ -12,8 +13,16 @@ def parse_color(m: re.Match[str]) -> str:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('file')
+    parser.add_argument('file', nargs='?', default='-')
 
     args = parser.parse_args()
-    with open(args.file, 'r') as fp:
-        print(re.sub(r'(#([\da-f]{1,3}|[\da-f]{6}))([^\da-f])', parse_color, fp.read()))
+    if args.file == '-':
+        try:
+            content = sys.stdin.read()
+        except KeyboardInterrupt:
+            sys.exit(0)
+    else:
+        with open(args.file, 'r') as fp:
+            content = fp.read()
+
+    print(re.sub(r'(#([\da-f]{1,3}|[\da-f]{6}))([^\da-f])', parse_color, content))
