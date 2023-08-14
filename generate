@@ -9,6 +9,7 @@ import yaml
 from lib.colors import ranked_matches, str2color
 from lib.config import config_schema
 from lib.data import Highlight
+from lib.schemes.custom import custom_out
 from lib.schemes.kitty import kitty_out
 from lib.schemes.text_mate import tm_out
 from lib.schemes.vim import vim_out
@@ -61,6 +62,11 @@ def main(config: dict[str, Any]):
     if 'text-mate' in config:
         tm = tm_out(config['text-mate'], group2hl)
         save_to(config['text-mate']['destination'], tm)
+
+    if 'custom' in config:
+        for custom in config['custom']:
+            content = custom_out(custom['content'], group2hl)
+            save_to(custom['destination'], content)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
