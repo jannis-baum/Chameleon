@@ -6,9 +6,8 @@ from typing import Any
 
 import yaml
 
-from lib.colors import ranked_matches, str2color
 from lib.config import config_schema
-from lib.data import Highlight, Scheme
+from lib.data import Scheme
 from lib.schemes.custom import custom_out
 from lib.schemes.kitty import kitty_out
 from lib.schemes.text_mate import tm_out
@@ -21,7 +20,7 @@ def save_to(dest: str, content: str):
         fp.write(content)
 
 def main(config: dict[str, Any]):
-    scheme = Scheme()
+    scheme = Scheme(config.get('colors', []))
 
     vim = vim_out(config['vim'], scheme)
     save_to(config['vim']['destination'], vim)

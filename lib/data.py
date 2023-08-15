@@ -9,13 +9,16 @@ class Highlight:
         self.ul = ul
 
 class Scheme:
-    def __init__(self):
+    def __init__(self, initial_colors):
         # 256-color -> (dark-24bit, light-24bit)
         self.term2true: dict[int, tuple[int, int]] = dict()
         # and the other way around
         self._true2term: dict[tuple[int, int], int] = dict()
         # group/name/scope to hl reference
         self._group2hl: dict[str, Highlight] = dict()
+
+        for initial in initial_colors:
+            _ = self.get_hl(initial)
 
     # load best remaining match OR already existing mapping for
     # dark/light 24-bit color to 256 color
@@ -38,16 +41,16 @@ class Scheme:
         except: raise Exception(f'The color "{group}" is not defined.')
 
     # get hl from existing or new group and save for future use
-    def get_hl(self, source) -> Highlight:
-        if type(source) is str:
-            return self._get(source)
-
-        hl = Highlight(
-            self._load_256(source['fg']) if 'fg' in source else None,
-            self._load_256(source['bg']) if 'bg' in source else None,
-            source.get('deco'),
-            self._load_256(source['ul']) if 'ul' in source else None,
-        )
+    def get_hl(self, source: dict) -> Highlight:
+        if 'from' in source:
+            hl = self._get(source['from'])
+        else:
+            hl = Highlight(
+                self._load_256(source['fg']) if 'fg' in source else None,
+                self._load_256(source['bg']) if 'bg' in source else None,
+                source.get('deco'),
+                self._load_256(source['ul']) if 'ul' in source else None,
+            )
 
         group = source['set']
         if type(group) is list:

@@ -7,8 +7,8 @@ from lib.schemes.all import disclaimer, format_colordefs
 def kitty_out(kitty_config: dict, scheme: Scheme) -> tuple[str, str]:
     header = f'# {disclaimer}\n\n{kitty_config.get("header") or ""}'
     headers = (
-        format_colordefs(re.sub(r'(\S+)\|\|\|\S+', r'\1', header), scheme),
-        format_colordefs(re.sub(r'\S+\|\|\|(\S+)', r'\1', header), scheme)
+        format_colordefs(re.sub(r'(\S+)\|\|\|\S+', r'\1', header), scheme, 'dark'),
+        format_colordefs(re.sub(r'\S+\|\|\|(\S+)', r'\1', header), scheme, 'light')
     )
 
     def mode(i: int) -> str:

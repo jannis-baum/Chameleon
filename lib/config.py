@@ -2,21 +2,21 @@ from voluptuous import Any
 from voluptuous.schema_builder import Required, Schema
 
 color_schema = { Required('dark'): str, Required('light'): str }
-hl_schema = Any(
-    {
-        Required('set'): Any(str, [str]),
-        'fg': color_schema,
-        'bg': color_schema,
-        'deco': str,
-        'ul': color_schema
-    },
-    {
-        Required('set'): Any(str, [str]),
-        Required('from'): str
-    }
-)
+hl_schema_def = {
+    Required('set'): Any(str, [str]),
+    'fg': color_schema,
+    'bg': color_schema,
+    'deco': str,
+    'ul': color_schema
+}
+hl_schema = Any(hl_schema_def, {
+    Required('set'): Any(str, [str]),
+    Required('from'): str
+})
 
 config_schema = Schema({
+    'colors': [hl_schema_def],
+
     Required('kitty'): {
         Required('destinations'): color_schema,
         'header': str
