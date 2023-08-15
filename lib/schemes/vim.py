@@ -1,7 +1,7 @@
-from lib.data import Highlight
+from lib.data import Highlight, Scheme
 from lib.schemes.all import disclaimer
 
-def vim_hl(hl: Highlight, group: str) -> str:
+def _hl(hl: Highlight, group: str) -> str:
     return ' '.join([
         f'highlight {group}',
         f'ctermfg={hl.fg or "none"}',
@@ -10,8 +10,16 @@ def vim_hl(hl: Highlight, group: str) -> str:
         f'ctermul={hl.ul or "none"}',
     ])
 
-def vim_out(header: str | None, group2hl: dict[str, Highlight]) -> str:
-    header = f'" {disclaimer}\n\n{header or ""}'
-    return '\n'.join([header] + [
-        vim_hl(hl, group) for group, hl in group2hl.items()
-    ])
+def vim_out(vim_config: dict, scheme: Scheme) -> str:
+    header = f'" {disclaimer}\n\n{vim_config.get("header") or ""}'
+
+    content: list[str] = [header]
+    for hl_def in vim_config['highlight']:
+        hl = scheme.get_hl(hl_def)
+        group = hl_def['set']
+        if type(group) is list:
+            for g in group:
+                content.append(_hl(hl, g))
+        else: content.append(_hl(hl, group))
+
+    return '\n'.join(content)

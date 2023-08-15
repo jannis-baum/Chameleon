@@ -8,7 +8,7 @@ import yaml
 
 from lib.colors import ranked_matches, str2color
 from lib.config import config_schema
-from lib.data import Highlight
+from lib.data import Highlight, Scheme
 from lib.schemes.custom import custom_out
 from lib.schemes.kitty import kitty_out
 from lib.schemes.text_mate import tm_out
@@ -21,52 +21,23 @@ def save_to(dest: str, content: str):
         fp.write(content)
 
 def main(config: dict[str, Any]):
-    # 256-color -> (dark-24bit, light-24bit)
-    term2true: dict[int, tuple[int, int]] = dict()
-    # and the other way around
-    true2term: dict[tuple[int, int], int] = dict()
-    # group -> 256-color
-    group2hl: dict[str, Highlight] = dict()
+    scheme = Scheme()
 
-    def color_for(color_def: dict[str, str]) -> int:
-        dl = (str2color(color_def['dark']), str2color(color_def['light']))
-        if dl in true2term:
-            i = true2term[dl]
-        else:
-            matches = ranked_matches(*dl)
-            try:
-                i = next(m for m in matches if not m in term2true)
-            except:
-                raise Exception('you can only use 256 colors in total')
-            term2true[i] = dl
-            true2term[dl] = i
-        return i
-
-    for color_def in config['vim']['colors']:
-        hl = Highlight(
-            color_for(color_def['fg']) if 'fg' in color_def else None,
-            color_for(color_def['bg']) if 'bg' in color_def else None,
-            color_def.get('deco'),
-            color_for(color_def['ul']) if 'ul' in color_def else None,
-        )
-        for group in color_def['groups']:
-            group2hl[group] = hl
-
-    kitty_dark, kitty_light = kitty_out(config['kitty'].get('header'), term2true)
-    save_to(config['kitty']['destinations']['dark'], kitty_dark)
-    save_to(config['kitty']['destinations']['light'], kitty_light)
-
-    vim = vim_out(config['vim'].get('header'), group2hl)
+    vim = vim_out(config['vim'], scheme)
     save_to(config['vim']['destination'], vim)
 
     if 'text-mate' in config:
-        tm = tm_out(config['text-mate'], group2hl)
+        tm = tm_out(config['text-mate'], scheme)
         save_to(config['text-mate']['destination'], tm)
 
     if 'custom' in config:
         for custom in config['custom']:
-            content = custom_out(custom['content'], group2hl)
+            content = custom_out(custom, scheme)
             save_to(custom['destination'], content)
+
+    kitty_dark, kitty_light = kitty_out(config['kitty'], scheme)
+    save_to(config['kitty']['destinations']['dark'], kitty_dark)
+    save_to(config['kitty']['destinations']['light'], kitty_light)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
