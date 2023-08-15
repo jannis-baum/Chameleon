@@ -1,3 +1,4 @@
+import os
 import re
 from typing import Literal
 
@@ -10,3 +11,9 @@ def format_colordefs(text: str, scheme: Scheme, true_color: Literal['dark'] | Li
         id = m.groups()[0]
         return scheme.from_str(id, true_color)
     return re.sub(r'\{\{ ([^} ]+) \}\}', get_hl, text)
+
+def save_to(dest: str, content: str):
+    path = os.path.expanduser(dest)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, 'w') as fp:
+        fp.write(content)

@@ -1,42 +1,30 @@
 #!/usr/bin/env python3
 
 import argparse
-import os
 from typing import Any
 
 import yaml
 
 from lib.config import config_schema
 from lib.data import Scheme
-from lib.schemes.custom import custom_out
-from lib.schemes.kitty import kitty_out
-from lib.schemes.text_mate import tm_out
-from lib.schemes.vim import vim_out
-
-def save_to(dest: str, content: str):
-    path = os.path.expanduser(dest)
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, 'w') as fp:
-        fp.write(content)
+from lib.schemes.custom import gen_custom
+from lib.schemes.kitty import gen_kitty
+from lib.schemes.text_mate import gen_tm
+from lib.schemes.vim import gen_vim
 
 def main(config: dict[str, Any]):
     scheme = Scheme(config.get('colors', []))
 
-    vim = vim_out(config['vim'], scheme)
-    save_to(config['vim']['destination'], vim)
+    gen_vim(config['vim'], scheme)
 
     if 'text-mate' in config:
-        tm = tm_out(config['text-mate'], scheme)
-        save_to(config['text-mate']['destination'], tm)
+        gen_tm(config['text-mate'], scheme)
 
     if 'custom' in config:
         for custom in config['custom']:
-            content = custom_out(custom, scheme)
-            save_to(custom['destination'], content)
+            gen_custom(custom, scheme)
 
-    kitty_dark, kitty_light = kitty_out(config['kitty'], scheme)
-    save_to(config['kitty']['destinations']['dark'], kitty_dark)
-    save_to(config['kitty']['destinations']['light'], kitty_light)
+    gen_kitty(config['kitty'], scheme)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

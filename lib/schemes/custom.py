@@ -1,5 +1,6 @@
 from lib.data import Scheme
-from lib.schemes.all import format_colordefs
+from lib.schemes.all import format_colordefs, save_to
 
-def custom_out(custom_config: dict, scheme: Scheme):
-    return format_colordefs(custom_config['content'], scheme)
+def gen_custom(config: dict, scheme: Scheme):
+    content = format_colordefs(config['content'], scheme)
+    save_to(config['destination'], content)

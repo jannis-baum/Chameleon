@@ -1,5 +1,5 @@
 from lib.data import Highlight, Scheme
-from lib.schemes.all import disclaimer
+from lib.schemes.all import disclaimer, save_to
 
 def _hl(hl: Highlight, group: str) -> str:
     return ' '.join([
@@ -10,11 +10,11 @@ def _hl(hl: Highlight, group: str) -> str:
         f'ctermul={hl.ul or "none"}',
     ])
 
-def vim_out(vim_config: dict, scheme: Scheme) -> str:
-    header = f'" {disclaimer}\n\n{vim_config.get("header") or ""}'
+def gen_vim(config: dict, scheme: Scheme):
+    header = f'" {disclaimer}\n\n{config.get("header") or ""}'
 
     content: list[str] = [header]
-    for hl_def in vim_config['highlight']:
+    for hl_def in config['highlight']:
         hl = scheme.get_hl(hl_def)
         group = hl_def['set']
         if type(group) is list:
@@ -22,4 +22,4 @@ def vim_out(vim_config: dict, scheme: Scheme) -> str:
                 content.append(_hl(hl, g))
         else: content.append(_hl(hl, group))
 
-    return '\n'.join(content)
+    save_to(config['destination'], '\n'.join(content))

@@ -2,6 +2,7 @@ import plistlib as pl
 import uuid
 
 from lib.data import Highlight, Scheme
+from lib.schemes.all import save_to
 
 def _colstr(color256: int | None = None) -> str:
     if not color256: return '#00000000'
@@ -17,7 +18,7 @@ def _hl(hl: Highlight, scopes: str | list[str]) -> dict:
         'settings': settings
     }
 
-def tm_out(config: dict, scheme: Scheme) -> str:
+def gen_tm(config: dict, scheme: Scheme):
     glob_defs = config.get('global', {})
     out = {
         'author': config['author'],
@@ -35,4 +36,4 @@ def tm_out(config: dict, scheme: Scheme) -> str:
             hl = scheme.get_hl(hl_def)
             out['settings'].append(_hl(hl, hl_def['set']))
 
-    return pl.dumps(out).decode()
+    save_to(config['destination'], pl.dumps(out).decode())
