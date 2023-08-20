@@ -1,7 +1,7 @@
 from voluptuous import Any
 from voluptuous.schema_builder import Required, Schema
 
-color_schema = { Required('dark'): str, Required('light'): str }
+color_schema = Any(str, { Required('dark'): str, Required('light'): str })
 hl_schema_def = {
     Required('set'): Any(str, [str]),
     'fg': color_schema,
@@ -15,10 +15,14 @@ hl_schema = Any(hl_schema_def, {
 })
 
 config_schema = Schema({
-    'colors': [hl_schema_def],
+    'colors': { str: color_schema },
+    'highlights': [hl_schema_def],
 
     Required('kitty'): {
-        Required('destinations'): color_schema,
+        Required('destinations'): {
+            Required('dark'): str,
+            Required('light'): str
+        },
         'header': str
     },
 

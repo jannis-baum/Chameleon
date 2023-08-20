@@ -13,7 +13,7 @@ from lib.schemes.text_mate import gen_tm
 from lib.schemes.vim import gen_vim
 
 def main(config: dict[str, Any]):
-    scheme = Scheme(config.get('colors', []))
+    scheme = Scheme(config.get('colors', {}), config.get('highlights', []))
 
     gen_vim(config['vim'], scheme)
 
