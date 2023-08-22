@@ -53,4 +53,4 @@ just run `generate <your file>` and Chameleon will automatically generate all
 the color schemes and save them where you defined the destinations. That's it!
 
 If you want your terminal to react to system dark/light mode switches, check out
-[this guide](./docs/theme-change.md)
+[this guide](./docs/theme-change.md).
