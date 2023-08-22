@@ -4,7 +4,7 @@ Chameleon creates color schemes for all your terminal programs that allow you to
 dynamically switch between dark and light mode - all from a single color scheme
 definition file!
 
-## How it works
+## ✨ How it works
 
 You keep a single `yaml` file with lots of syntactic sugar where you define
 24-bit colors for everything, each in their dark mode and light mode version.
@@ -23,7 +23,7 @@ This works because the 256-colors that are actually used by your programs in the
 background stay at the same value, just your terminal's interpretation of them
 changes.
 
-## Supported software
+## 💻 Supported software
 
 If your favorite software is not yet supported, feel free to submit a pull
 request!
@@ -46,11 +46,12 @@ Chameleon can support any terminal program that lets you customize it with the
 - Anything else based on placeholders that Chameleon populates with the correct
   colors, e.g. for colors used in your shell
 
-## How to use
+## 🔧 How to use
 
-Set up your `yaml` color scheme definition [like this](./docs/schemes.md). Then,
-just run `generate <your file>` and Chameleon will automatically generate all
-the color schemes and save them where you defined the destinations. That's it!
+1. Run `pip install -r requirements.txt`
+2. Set up your `yaml` color scheme definition [like this](./docs/schemes.md)
+3. Run `generate <your file>` and Chameleon will automatically generate all the
+   color schemes and save them where you defined the destinations!
 
 If you want your terminal to react to system dark/light mode switches, check out
 [this guide](./docs/theme-change.md).
