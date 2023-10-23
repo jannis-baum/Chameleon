@@ -14,7 +14,7 @@ def _hl(hl: Highlight, scopes: str | list[str]) -> dict:
     if hl.bg: settings['background'] = _colstr(hl.bg)
     if hl.deco: settings['fontStyle'] = hl.deco
     return {
-        'scopes': scopes if type(scopes) is list else [scopes],
+        'scope': ', '.join(scopes) if type(scopes) is list else scopes,
         'settings': settings
     }
 
