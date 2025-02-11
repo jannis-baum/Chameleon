@@ -4,7 +4,7 @@ from typing import Literal
 
 from lib.data import Scheme
 
-disclaimer = 'GENERATED WITH https://github.com/jannis-baum/dynamic-term-colors'
+disclaimer = 'GENERATED WITH https://github.com/jannis-baum/Chameleon'
 
 def format_colordefs(text: str, scheme: Scheme, true_color: Literal['dark'] | Literal['light'] | None = None) -> str:
     def get_hl(m: re.Match[str]) -> str:
