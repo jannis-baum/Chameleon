@@ -11,11 +11,13 @@ from lib.schemes.custom import gen_custom
 from lib.schemes.kitty import gen_kitty
 from lib.schemes.text_mate import gen_tm
 from lib.schemes.vim import gen_vim
+from lib.schemes.nvim import gen_nvim
 
 def main(config: dict[str, Any]):
     scheme = Scheme(config.get('colors', {}), config.get('highlights', []))
 
     gen_vim(config['vim'], scheme)
+    gen_nvim(config['vim'], scheme)
 
     if 'text-mate' in config:
         gen_tm(config['text-mate'], scheme)

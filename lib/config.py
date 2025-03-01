@@ -28,7 +28,9 @@ config_schema = Schema({
 
     Required('vim'): {
         Required('destination'): str,
+        Required('destination_nvim'): str,
         'header': str,
+        'header_nvim': str,
         Required('highlight'): [hl_schema]
     },
 

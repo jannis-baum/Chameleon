@@ -41,7 +41,7 @@ implemented
 Chameleon can support any terminal program that lets you customize it with the
 256 terminal colors. Below is a list of color schemes Chameleon can generate.
 
-- Vim
+- Vim & NeoVim
 - TextMate
 - Anything else based on placeholders that Chameleon populates with the correct
   colors, e.g. for colors used in your shell
