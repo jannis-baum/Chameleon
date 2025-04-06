@@ -12,6 +12,7 @@ def _hl(hl: Highlight, group: str) -> str:
         # https://github.com/neovim/neovim/issues/23025#issuecomment-2450467152
         # https://github.com/neovim/neovim/issues/8583#issuecomment-2450472808
         # f'ctermul={hl.ul or "none"}',
+        'guisp=none'
     ])
 
 def gen_nvim(config: dict, scheme: Scheme):
