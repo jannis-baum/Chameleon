@@ -6,7 +6,7 @@ your scheme definition:
 
 - Check below for an explanation of the scheme definition
 - See @jannis-baum's color scheme
-  [`jellyfish`](https://github.com/jannis-baum/dotfiles/blob/main/.lib/nosync/color-schemes/jellyfish.yaml)
+  [`jellyfish`](https://github.com/jannis-baum/dotfiles/blob/d994b4affa0b70e735b5d1239b3704ba04e46b32/lib/color-schemes/jellyfish.yaml)
   as an example
 - Check the (easily readable) [color scheme validation code](../lib/config.py)
 - Just try it out! Your definition is validated and you will get helpful error
